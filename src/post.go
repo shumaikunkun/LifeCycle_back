@@ -19,38 +19,31 @@ def lambda_handler(event:, context:)
     tag=event["tag"]
     content=event["content"]
 
-
+    #データベースを特定
     dynamoDB = Aws::DynamoDB::Resource.new(region: 'ap-northeast-1')
     table = dynamoDB.table('Data')
-
-    #データを入力
 
     #追加する案件
     data={ posted: Time.new.strftime("%m/%d-%H:%M"), st: st, en: en, tag: tag, content: content }
 
-    #ユーザが登録がまだされていなかったら
+    #ユーザが登録がまだされていなかったら新規登録、されていたら案件を追加
     if table.get_item({key: { 'name' => name } })["item"].nil?
-      json={
-        item: {
-          name: name,
-          plan: [data]
-        }
-      }
-      table.put_item(json)
+      plan_arr=[data]
     else
-      json={
-        item: {
-          name: name,
-          plan: table.get_item({key: { 'name' => name } })["item"]["plan"].push(data)
-        }
-      }
-      table.put_item(json)
+      plan_arr=table.get_item({key: { 'name' => name } })["item"]["plan"].push(data)
     end
 
+    json={
+      item: {
+        name: name,
+        plan: plan_arr
+      }
+    }
+    #データを入力
+    table.put_item(json)
+
     #データを取得
-    resp = table.get_item({
-        key: { 'name' => name }
-    })
+    resp = table.get_item({ key: { 'name' => name } })
 
     { statusCode: 200, body: resp }
 end
