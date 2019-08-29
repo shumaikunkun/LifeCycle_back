@@ -29,8 +29,17 @@ def lambda_handler(event:, context:)
         end
     end
 
+    # #タグとタスクの対応表
+    # task=["睡眠","勉強","開発","ゲーム","運動","スマホ・PC","テレビ","食事","遊び","その他"]
+    # task_hash=Hash.new
+    # 10.times{|i|task_hash[i.to_s]=task[i]}
+
+    #フロントエンド側で数字を変数名にできないため、キーの先頭に英語をつけたハッシュを緊急的に作る
+    new_hash=Hash.new
+    hash.each{|k,v|new_hash[("a"+k).to_sym]=v}
+
     #タスクごとの総時間と得点のJSON
-    resp={hash: hash, point: point}
+    resp={ hash: new_hash.to_json, point: point.to_i }
 
     return { statusCode: 200, body: resp.to_json }
 end
