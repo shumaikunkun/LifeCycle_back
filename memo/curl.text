@@ -1,0 +1,8 @@
+curlコマンドで見る場合
+  POSTメソッド
+    curl -X POST "https://qm2ju9z5y5.execute-api.ap-northeast-1.amazonaws.com/dev/test" -d  '{"name":"shuma", "tag":"1", "st":"08/29-00:00", "en":"08/29-00:59", "content":"I was tired..."}'
+  GETメソッド
+    curl -X GET "https://qm2ju9z5y5.execute-api.ap-northeast-1.amazonaws.com/dev/test?name=shuma"
+
+Web上で見る場合
+  https://qm2ju9z5y5.execute-api.ap-northeast-1.amazonaws.com/dev/test?name=shuma
