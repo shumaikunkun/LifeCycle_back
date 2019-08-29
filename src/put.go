@@ -29,8 +29,8 @@ def lambda_handler(event:, context:)
         end
     end
 
-    hash["point"]=point
+    #タスクごとの総時間と得点のJSON
+    resp={hash: hash, point: point}
 
-
-    return { statusCode: 200, body: hash.to_json }
+    return { statusCode: 200, body: resp.to_json }
 end
