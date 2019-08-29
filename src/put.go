@@ -36,10 +36,12 @@ def lambda_handler(event:, context:)
 
     #フロントエンド側で数字を変数名にできないため、キーの先頭に英語をつけたハッシュを緊急的に作る
     new_hash=Hash.new
-    hash.each{|k,v|new_hash[("a"+k).to_sym]=v}
+    hash.each{|k,v|new_hash["a"+k]=v}
 
+
+    p new_hash
     #タスクごとの総時間と得点のJSON
-    resp={ hash: new_hash.to_json, point: point.to_i }
+    resp={ hash: new_hash, point: point.to_i }
 
     return { statusCode: 200, body: resp.to_json }
 end
